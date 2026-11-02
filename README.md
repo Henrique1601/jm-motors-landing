@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Henrique1601/ride-shine-landing/releases"><img src="https://img.shields.io/badge/version-v1.0.0-blue.svg?style=for-the-badge" alt="Version"></a>
+  <a href="https://github.com/Henrique1601/jm-motors-landing/releases"><img src="https://img.shields.io/badge/version-v1.0.0-blue.svg?style=for-the-badge" alt="Version"></a>
   <a href="https://react.dev"><img src="https://img.shields.io/badge/React-19.2.0-61DAFB.svg?style=for-the-badge&logo=react&logoColor=black" alt="React 19"></a>
   <a href="https://tanstack.com/start"><img src="https://img.shields.io/badge/TanStack_Start-1.168-FF4154.svg?style=for-the-badge" alt="TanStack Start"></a>
   <a href="https://tailwindcss.com"><img src="https://img.shields.io/badge/Tailwind_CSS-v4.2-38B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS"></a>
@@ -84,8 +84,8 @@ A aplicação conta com infraestrutura completa de SEO técnico e regional para 
 
 ```sh
 # 1. Clone o repositório
-git clone https://github.com/Henrique1601/ride-shine-landing.git
-cd ride-shine-landing
+git clone https://github.com/Henrique1601/jm-motors-landing.git
+cd jm-motors-landing
 
 # 2. Instale as dependências
 npm install

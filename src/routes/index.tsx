@@ -20,6 +20,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { ReviewsCarousel } from "../components/ReviewsCarousel";
+import { bikes, bikeCategories } from "../data/bikes";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -63,21 +64,15 @@ export const Route = createFileRoute("/")({
 const WA =
   "https://wa.me/5513976007271?text=" +
   encodeURIComponent("Olá, JM Motors! Vim pelo site e quero saber mais sobre as motos.");
-const waFor = (m: string) =>
+const waFor = (m: string, price?: string) =>
   "https://wa.me/5513976007271?text=" +
-  encodeURIComponent(`Olá, JM Motors! Tenho interesse na ${m}.`);
+  encodeURIComponent(
+    `Olá, JM Motors! Tenho interesse na moto ${m}${price ? ` (${price})` : ""} que vi no catálogo do site. Gostaria de saber mais informações!`,
+  );
 const PDF = "/catalogo-jm-motors.pdf";
 const ease = [0.22, 1, 0.36, 1] as const;
 
-const bikes = [
-  { name: "Honda PCX 160", brand: "Honda", cat: "Scooter", spec: "160cc · ABS · Smart Key" },
-  { name: "Honda ADV 160", brand: "Honda", cat: "Scooter", spec: "160cc · Aventura urbana" },
-  { name: "Kawasaki Ninja 400", brand: "Kawasaki", cat: "Esportiva", spec: "399cc · Bicilíndrica" },
-  { name: "Kawasaki Z400", brand: "Kawasaki", cat: "Naked", spec: "399cc · Street fighter" },
-  { name: "Honda CG 160", brand: "Honda", cat: "Street", spec: "160cc · Econômica" },
-  { name: "Kawasaki Versys-X 300", brand: "Kawasaki", cat: "Trail", spec: "296cc · Big trail" },
-];
-const filters = ["Todas", "Honda", "Kawasaki"];
+const filters = [...bikeCategories];
 
 const hours = [
   ["Segunda a Sexta", "09:00 – 18:30"],
@@ -141,7 +136,7 @@ function Index() {
   const op = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
 
   const [filter, setFilter] = useState("Todas");
-  const list = filter === "Todas" ? bikes : bikes.filter((b) => b.brand === filter);
+  const list = filter === "Todas" ? bikes : bikes.filter((b) => b.brand === filter || b.cat === filter);
 
   // Mobile navigation drawer state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -341,16 +336,18 @@ function Index() {
         <div className="animate-marquee flex w-max gap-12 whitespace-nowrap font-display text-3xl font-extrabold uppercase">
           {Array.from({ length: 2 }).flatMap((_, k) =>
             [
-              "PCX",
-              "ADV",
-              "Kawasaki",
-              "Ninja",
-              "Z400",
-              "Honda",
-              "Financiamento",
-              "Seminovas",
-              "Vila Mathias",
-              "Santos - SP",
+              "Honda ADV 160",
+              "Honda CB 650F",
+              "Triumph Tiger 660",
+              "Honda Sahara 300",
+              "Zontes T350 X",
+              "Honda Titan 160",
+              "Honda PCX DLX",
+              "Yamaha Factor 150",
+              "Honda Bros 160",
+              "Scooter Elétrica X12",
+              "Seminovas com Laudo",
+              "Vila Mathias - Santos",
             ].map((w) => (
               <span key={w + k} className="flex items-center gap-12">
                 {w} <span>✦</span>
@@ -370,7 +367,7 @@ function Index() {
                 Escolha a sua
               </h2>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               {filters.map((f) => (
                 <button
                   key={f}
@@ -394,46 +391,79 @@ function Index() {
             </div>
           </Reveal>
 
-          <motion.div layout className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <motion.div layout className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {list.map((b, i) => (
               <motion.article
                 layout
-                key={b.name}
+                key={b.id}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: (i % 3) * 0.1, ease }}
-                className="group relative overflow-hidden rounded-lg border border-border bg-card"
+                className="group relative flex flex-col justify-between overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/50 hover:shadow-2xl"
               >
-                <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-muted">
-                  <Bike
-                    className="h-16 w-16 text-muted-foreground/30 transition-transform duration-700 group-hover:scale-125 group-hover:text-primary/50"
-                    strokeWidth={1}
-                  />
-                  <span className="absolute left-4 top-4 rounded-full border border-border bg-background/60 px-3 py-1 text-xs backdrop-blur">
-                    {b.cat}
-                  </span>
-                  <span className="absolute bottom-4 right-4 text-xs text-muted-foreground">
-                    Foto em breve
-                  </span>
-                </div>
-                <div className="flex items-end justify-between p-6">
-                  <div>
-                    <p className="text-xs uppercase tracking-widest text-muted-foreground">
-                      {b.brand}
-                    </p>
-                    <h3 className="font-display text-3xl font-extrabold uppercase">{b.name}</h3>
+                <div>
+                  <div className="relative flex aspect-[4/3] items-center justify-center overflow-hidden bg-muted">
+                    <img
+                      src={b.image}
+                      alt={b.name}
+                      loading="lazy"
+                      onError={(e) => {
+                        (e.currentTarget as HTMLImageElement).src = b.remoteImage;
+                      }}
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <span className="absolute left-3 top-3 rounded-full border border-border bg-background/85 px-3 py-1 text-xs font-semibold backdrop-blur text-foreground">
+                      {b.cat}
+                    </span>
+                    <span className="absolute bottom-3 right-3 rounded-full bg-primary/95 px-3.5 py-1 text-xs font-bold text-primary-foreground backdrop-blur shadow-md">
+                      {b.price}
+                    </span>
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center justify-between gap-2 text-xs uppercase tracking-widest text-muted-foreground font-semibold">
+                      <span>{b.brand}</span>
+                      <span>Ano {b.year}</span>
+                    </div>
+                    <h3 className="mt-2 font-display text-2xl font-black uppercase text-foreground group-hover:text-primary transition-colors">
+                      {b.name}
+                    </h3>
                     <p className="mt-1 text-sm text-muted-foreground">{b.spec}</p>
                   </div>
-                  <a
-                    href={waFor(b.name)}
-                    target="_blank"
-                    rel="noreferrer"
-                    aria-label={`Consultar ${b.name}`}
-                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-border transition-all group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                  >
-                    <ArrowUpRight className="h-5 w-5" />
-                  </a>
+                </div>
+
+                <div className="flex items-end justify-between border-t border-border/60 p-6 bg-card/40">
+                  <div>
+                    <span className="text-[11px] uppercase tracking-wider text-muted-foreground block font-medium">
+                      À vista ou Financiada
+                    </span>
+                    <span className="font-display text-3xl font-extrabold text-foreground">
+                      {b.price}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {b.olxLink && (
+                      <a
+                        href={b.olxLink}
+                        target="_blank"
+                        rel="noreferrer"
+                        title="Ver anúncio completo na OLX"
+                        className="inline-flex h-11 items-center gap-1.5 rounded-full border border-border px-3.5 text-xs font-semibold text-muted-foreground transition-all hover:border-primary hover:text-foreground"
+                      >
+                        OLX <ArrowUpRight className="h-3.5 w-3.5" />
+                      </a>
+                    )}
+                    <a
+                      href={waFor(b.name, b.price)}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`Negociar ${b.name}`}
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-whatsapp text-primary-foreground shadow-md transition-all hover:scale-105"
+                      title="Negociar pelo WhatsApp"
+                    >
+                      <WhatsIcon className="h-5 w-5" />
+                    </a>
+                  </div>
                 </div>
               </motion.article>
             ))}
