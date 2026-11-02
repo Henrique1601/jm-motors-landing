@@ -1,5 +1,5 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "jm-motors-landing",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -93,5 +93,19 @@
     "typescript-eslint": "^8.56.1",
     "vite": "8.1.5",
     "vitest": "^4.1.10"
-  }
+  },
+  "version": "1.0.0",
+  "description": "Landing page oficial da JM Motors — Concessionária de motos novas e seminovas em Santos/SP",
+  "author": "Henrique Bezerra Dos Santos",
+  "license": "MIT",
+  "keywords": [
+    "jm-motors",
+    "motos-santos",
+    "concessionaria",
+    "tanstack-start",
+    "react19",
+    "tailwindcss",
+    "motion",
+    "seo-local"
+  ]
 }
